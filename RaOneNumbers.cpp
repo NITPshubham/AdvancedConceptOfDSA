@@ -1,44 +1,80 @@
+/*
+Any number is Ra-one 
+if the Difference between Sum of digits at even location and Sum of digits at odd location is One (1).
+
+For eg... for 234563 is Ra-One number
+
+digits at odd location are 3,5,3 (unit place is location 1 )
+digits at even location are 2,4,6
+
+Diff = (2+4+6)-(3+5+3)=12-11 = 1.
+
+And 123456 is not Ra-One number
+diff = (5+3+1) - (2+4+6) = -4
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
 class Solution {
 public:
-long long dp[12][2][12];
-long long solve(string &s, int idx, int tight, int count) {
-        if (idx == s.size()){
-            return count;
-        }
+    static const int OFFSET = 100;
+    long long dp[12][2][205];
+    string s;
 
-        if (dp[idx][tight][count] != -1) 
-            return dp[idx][tight][count];
+    long long dfs(int pos, int tight, int diff) {
+        if (pos == s.size())
+            return diff == 1;
 
-        int limit = tight ? (s[idx] - '0') : 9;
-        int res = 0;
+        long long &res = dp[pos][tight][diff + OFFSET];
+        if (res != -1) return res;
+
+        res = 0;
+        int limit = tight ? (s[pos] - '0') : 9;
+        int len = s.size();
+
         for (int d = 0; d <= limit; d++) {
-            int newcount = count + (d == 1);
+            int newDiff = diff;
 
-            res += solve(s, idx + 1, tight && (d == limit), newcount);
+            int remaining = len - pos;
+            if (remaining % 2 == 0)
+                newDiff += d;   // even position
+            else
+                newDiff -= d;   // odd position
+
+            res += dfs(
+                pos + 1,
+                tight && (d == limit),
+                newDiff
+            );
         }
-        return dp[idx][tight][count] = res;
+        return res;
     }
-    int countDigitOne(int n) {
-        if (n < 0) 
-            return 0;
-        string s = to_string(n);
+
+    long long countRaOne(long long x) {
+        if (x < 0) return 0;
+        s = to_string(x);
         memset(dp, -1, sizeof(dp));
-        return solve(s, 0, 1, 0);
+        return dfs(0, 1, 0);
+    }
+
+    long long solve(long long L, long long R) {
+        return countRaOne(R) - countRaOne(L - 1);
     }
 };
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int t;
     cin >> t;
     Solution obj;
 
     while (t--) {
-        long long N;
-        cin >> N;
-        cout << obj.solve(N) << "\n";
+        long long L, R;
+        cin >> L >> R;
+        cout << obj.solve(L, R) << "\n";
     }
     return 0;
 }
