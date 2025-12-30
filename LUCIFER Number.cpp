@@ -7,6 +7,23 @@ digits at odd location 0, 2, 1, 0.
 digits at even location 1, 4, 3, 2.
 
 difference = (1+4+3+2)-(0+2+1+0) = 10-3 = 7 ... a prime number.
+
+Example
+Input:
+5
+200 250
+150 200
+100 150
+50 100
+0 50
+
+Output:
+2
+16
+3
+18
+6
+NOTE: t will be less than 100. 'a' and 'b' will be between 0 and 109 inclusive.
 */
 
 #include <bits/stdc++.h>
