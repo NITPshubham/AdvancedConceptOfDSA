@@ -23,7 +23,7 @@ Output:
 3
 18
 6
-NOTE: t will be less than 100. 'a' and 'b' will be between 0 and 109 inclusive.
+NOTE: t will be less than 100. 'a' and 'b' will be between 0 and 109 inclusive. 
 */
 
 #include <bits/stdc++.h>
